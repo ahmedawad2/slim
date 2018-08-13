@@ -11,3 +11,9 @@ $app->get('/test', function (Request $req, Response $res, array $args) {
 $app->post('/test', function (Request $req, Response $res) {
     return $res->write('post request also works fine :D');
 });
+
+$app->get('/parse/post/{id}', function (Request $req, Response $res, $args) {
+    $parse = new \Parse\ParseQuery('Post');
+    $post = $parse->first($args['id']);
+    return $res->write($post->get('body'));
+});
