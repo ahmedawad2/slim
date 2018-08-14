@@ -57,3 +57,9 @@ $app->post('/test/post_params/{placeholder}', function (Request $req, Response $
     return $res->write(json_encode($data))->withHeader('Content-Type', 'application/json')->withHeader('Last-Modified', time());
 });
 
+//testing rendering a view with PhpRenderer
+$app->get('/test/view', function(Request $req, Response $res){
+    $response = $this->view->render($res, 'index.phtml', ['name' => 'ahmed awad']);
+    return $response;
+});
+

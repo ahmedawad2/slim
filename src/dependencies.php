@@ -29,4 +29,10 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 
+//adding PHPRenderer
+$container['view'] = function($c){
+    $view = new \Slim\Views\PhpRenderer('../templates/');
+    return $view;
+};
+
 
