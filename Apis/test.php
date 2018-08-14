@@ -63,3 +63,8 @@ $app->get('/test/view', function(Request $req, Response $res){
     return $response;
 });
 
+$app->post('/test/view/custom', function(Request $req, Response $res){
+    $data = $req->getParsedBody();
+    return $this->view->render($res, 'custom.phtml', $data);
+});
+
