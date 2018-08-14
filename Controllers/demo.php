@@ -17,7 +17,15 @@ class Demo
         $this->container->logger->info('hello');
         return 'working!';
     }
+
+    public function testRouteName($req, $res, $args)
+    {
+        //i will use the pathFor() in the $router to refer to this route
+        return 'after using pathfor(), you called this route!';
+    }
 }
 
-//routes
-$app->get('/demo/ind', \Demo::class . ':ind');
+//related routes
+//NOTE: you can name any route you define, which is GREAT!
+$app->get('/demo/ind', \Demo::class . ':ind')->setName('demoIndex');
+$app->get('/demo/testRouteName', \Demo::class . ':testRouteName')->setName('testRouteName');

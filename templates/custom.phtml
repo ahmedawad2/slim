@@ -6,10 +6,12 @@
 <body>
 <h1>the sent paramsters in the body are:</h1>
 <ul>
-<?php foreach ($data as $k): ?>
+<?php foreach ($data['body'] as $k): ?>
 <li><?php echo $k; ?></li>
 <?php endforeach; ?>
 </ul>
+
+<a href="<?php echo $data['router']->pathFor('testRouteName') ?>">testRouteName</a>
 </body>
 </body>
 </html>
