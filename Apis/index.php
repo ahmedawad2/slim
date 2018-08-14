@@ -35,5 +35,6 @@ require __DIR__ . '/../src/routes.php';
 
 require_once 'test.php';
 require_once 'parse_create.php';
+require_once '../Controllers/demo.php';
 
 $app->run();
