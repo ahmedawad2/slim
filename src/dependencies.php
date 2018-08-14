@@ -1,4 +1,5 @@
 <?php
+require_once '../libs/configs.php';
 // DIC configuration
 
 $container = $app->getContainer();
@@ -17,3 +18,15 @@ $container['logger'] = function ($c) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
     return $logger;
 };
+
+//my added dependencies
+
+//adding PDO instance
+$container['db'] = function ($c) {
+    $pdo = new PDO('mysql:host=' . HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    return $pdo;
+};
+
+
