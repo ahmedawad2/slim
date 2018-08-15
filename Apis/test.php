@@ -8,6 +8,10 @@ $app->get('/test', function (Request $req, Response $res, array $args) {
     return $res->withJson($data, 200);
 });
 
+$app->get('/test/placeholder/{placeholder}', function(Request $req, Response $res){
+    return 'you entered: '.$req->getAttribute('placeholder');
+});
+
 $app->post('/test', function (Request $req, Response $res) {
     return $res->write('post request also works fine :D');
 });
