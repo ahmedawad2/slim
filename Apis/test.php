@@ -8,8 +8,8 @@ $app->get('/test', function (Request $req, Response $res, array $args) {
     return $res->withJson($data, 200);
 });
 
-$app->get('/test/placeholder/{placeholder}', function(Request $req, Response $res){
-    return 'you entered: '.$req->getAttribute('placeholder');
+$app->get('/test/placeholder/{placeholder}', function (Request $req, Response $res) {
+    return 'you entered: ' . $req->getAttribute('placeholder');
 });
 
 $app->post('/test', function (Request $req, Response $res) {
@@ -62,14 +62,20 @@ $app->post('/test/post_params/{placeholder}', function (Request $req, Response $
 });
 
 //testing rendering a view with PhpRenderer
-$app->get('/test/view', function(Request $req, Response $res){
+$app->get('/test/view', function (Request $req, Response $res) {
     $response = $this->view->render($res, 'index.phtml', ['name' => 'ahmed awad']);
     return $response;
 });
 
-$app->post('/test/view/custom', function(Request $req, Response $res){
+$app->post('/test/view/custom', function (Request $req, Response $res) {
     $data['body'] = $req->getParsedBody();
     $data['router'] = $this->router;
     return $this->view->render($res, 'custom.phtml', $data);
+});
+
+//this route will work with the default http post verb,
+//and will also work with a Get request only when adding X-Http-Method-Override header with value: POST
+$app->post('/test/overrideHttpMethod', function (Request $req, Response $res) {
+    return $res->write('you have use a get request but it was overriden using the X-Http-Method-Override header to mimic a post request!');
 });
 
