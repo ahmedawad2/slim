@@ -9,7 +9,7 @@ return [
     'settings' => [
         'displayErrorDetails' => true, // set to false in production
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
-        'routerCacheFile' => 'caching.php',
+        //'routerCacheFile' => 'caching.php', //use this one after uploading to production server, delete the file and rebuild in case of updating any route
 
         // Renderer settings
         'renderer' => [

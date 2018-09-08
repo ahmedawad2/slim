@@ -79,3 +79,68 @@ $app->post('/test/overrideHttpMethod', function (Request $req, Response $res) {
     return $res->write('you have use a get request but it was overriden using the X-Http-Method-Override header to mimic a post request!');
 });
 
+// testing implementing a route that works with more than one HTTP verb
+$app->map(['get', 'delete'], '/test/multiMethods', function (Request $req, Response $res) {
+    $message = 'this route is working with either GET and DELETE';
+    if ($req->isGet()) {
+        $message .= ' and you have used GET this time';
+    } elseif ($req->isDelete()) {
+        $message .= ' and you have used DELETE this time';
+    }
+
+    return $res->getBody()->write($message);
+});
+
+//adding single optional parameter
+$app->get('/test/optional[/{id}]', function (Request $req, Response $res, array $args) {
+    $id = $args['id'] ? $args['id'] : 'null';
+    return $res->getBody()->write('you have sent ' . $id . ' as an optional parameter');
+});
+
+//adding 2 optional parameters
+//BEWARE of adding the whole optional pattern between [] including the /, and each param is surrounded by [] then {}
+$app->get('/test/optional2[/{fname}[/{lname}]]', function (Request $req, Response $res, array $args) {
+    $fname = $args['fname'];
+    $lname = $args['lname'];
+    $message = 'you have sent ';
+    if ($fname) {
+        $message .= "fname = $fname ";
+        if ($lname) {
+            $message .= " and lname = $lname";
+        } else {
+            $message .= " and lname = null";
+        }
+    } else {
+        $message .= 'nothing';
+    }
+    return $res->getBody()->write($message);
+});
+
+//adding unlimited number or params to URL segment
+$app->get('/test/unlimitedOptional[/{manyParams:.*}]', function (Request $req, Response $res) {
+    $optionalParams = $req->getAttribute('manyParams');
+    $optionalParams = $optionalParams ? explode('/', $optionalParams) : [];
+    return $res->getBody()->write('you have sent ' . json_encode($optionalParams));
+});
+
+//adding optional single parameter matching a Regex
+$app->get('/test/regex[/{id:[0-9]+}]', function (Request $req, Response $res) {
+    $id = $req->getAttribute('id');
+    $id = $id ? $id : 'null';
+    return $res->getBody()->write("you have sent $id");
+});
+
+
+//adding nested group of routes
+$app->group('/api', function () {
+    $this->group('/v1', function () {
+        $this->get('/fromV1', function (Request $req, Response $res) {
+            return $res->getBody()->write('you are in api/v1');
+        });
+    });
+    $this->group('/v2', function () {
+        $this->get('/fromV2', function (Request $req, Response $res) {
+            return $res->getBody()->write('you are in api/v2');
+        });
+    });
+});
